@@ -1,5 +1,6 @@
 function sendEmailsToWebhook() {
   var webhookUrl = "Your_WebHook";
+  // Just Put in Your Web Hook And Verify And Boom Done!
   
   var threads = GmailApp.getInboxThreads();
   
