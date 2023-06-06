@@ -2,6 +2,12 @@
 
 This repository contains a Google Apps Script that retrieves emails from your Gmail inbox and sends them to a Discord webhook in chunks. It is designed to run as a periodic task using Google's time-based triggers.
 
+## Issues
+
+⚠️Report Any Issues⚠️
+
+1. Known Issues Spams One Message repeatedly
+
 ## Usage
 
 1. Open the Google Apps Script editor for your Gmail account.
