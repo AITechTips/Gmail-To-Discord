@@ -5,7 +5,7 @@ This repository contains a Google Apps Script that retrieves emails from your Gm
 ## Usage
 
 1. Open the Google Apps Script editor for your Gmail account.
-2. Create a new script file and copy-paste the code from [main.gs](main.gs) into it.
+2. Create a new script file and copy-paste the code from [Script](script.txt) into it.
 3. Customize the `webhookUrl` variable with your Discord webhook URL.
 4. Save the script file.
 5. Run the `createTrigger` function once to set up the time-based trigger for the `sendEmailsToWebhook` function.
